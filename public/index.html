@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Interactive Table</title>
+		<link rel="stylesheet" href="stylesheets/piemenu.css">
+		<script src="javascripts/libs/jquery/dist/jquery.min.js"></script>
+		<script src="javascripts/libs/interact/interact.min.js"></script>
+		<script src="javascripts/pieMenu.js"></script>
+	</head>
+	<body>
+		<div id='outer_container' class="outer_container draggable tap-target" >
+			<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>
+			<ul class="menu_option">
+			  <li><a href="#"><span class="tf1">Item</span></a></li>
+			  <li><a href="#"><span class="f2">Item</span></a></li>
+			  <li><a href="#"><span>Item</span></a></li>
+			  <li><a href="#"><span class="usr">Item</span></a></li>
+			  <li><a href="#"><span>Item</span></a></li>
+			  <li><a href="#"><span>Item</span></a></li>
+			</ul>
+		</div>
+		<div id='outer_container2' class="outer_container draggable tap-target" >
+			<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>
+			<ul class="menu_option">
+			  <li><a href="#"><span>Item</span></a></li>
+			  <li><a href="#"><span>Item</span></a></li>
+			  <li><a href="#"><span class="usr">Item</span></a></li>
+			  <li><a href="#"><span>Item</span></a></li>
+			  <li><a href="#"><span class="tf1">Item</span></a></li>
+			</ul>
+		</div>
+		<script>
+		interact('.draggable')
+		  .draggable({
+		    inertia: true,
+		    restrict: {
+		      restriction: "parent",
+		      endOnly: true,
+		      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+		    },
+		    onmove: dragMoveListener,
+		  });
+
+	  function dragMoveListener (event) {
+	    var target = event.target,
+	        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+	        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+	    target.style.webkitTransform =
+	    target.style.transform =
+	      'translate(' + x + 'px, ' + y + 'px)';
+	    target.setAttribute('data-x', x);
+	    target.setAttribute('data-y', y);
+	  }
+
+		window.dragMoveListener = dragMoveListener;
+
+		interact('.tap-target')
+		  .on('tap', function (event) {
+				event.target.click();
+		    event.preventDefault();
+		 	})
+
+		function PieMenuInit(){
+			$('#outer_container').PieMenu({
+				'starting_angle':$('#s_angle').val(),
+				'angel_difference' : $('#diff_angle').val(),
+				'radius':$('#radius').val(),
+			});
+
+			$('#outer_container2').PieMenu({
+				'starting_angle':$('#s_angle').val(),
+				'angel_difference' : $('#diff_angle').val(),
+				'radius':$('#radius').val(),
+			});
+		}
+		$(function() {
+
+			PieMenuInit();
+
+		});
+		function reset(){
+			if($(".menu_button").hasClass('btn-rotate'))
+			$(".menu_button").trigger('click');
+
+			$("#info").fadeIn("slow").fadeOut("slow");
+			PieMenuInit();
+		}
+		</script>
+	</body>
+</html>
