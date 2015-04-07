@@ -1,9 +1,9 @@
 var socket = io();
 
-socket.on('card', function() {
-  var x = 0;
-  var y = 0;
-  var position = $('#outer_container').position();
-  $('#outer_container').css('transform','translate(' + (x-position.left)  + 'px, ' + (y-position.top) + 'px)');
+socket.on('card', function(param) {
+  var x = param.x;
+  var y = param.y;
+  $('#outer_container').css('left', x + 'px');
+  $('#outer_container').css('top', y-120 + 'px');
   $('#outer_container').show();
 });
