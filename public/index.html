@@ -27,7 +27,7 @@
 			$.get(url, function() {})
 		}
 		var show = false;
-		$("#back").css('height', window.outerHeight + 'px')
+		$("#back").css('height', window.innerHeight - window.innerHeight*5/100 + 'px')
 		$("#back").on('click', function(e) {
 			var x = e.clientX - $('#outer_container').innerWidth()/4;
 		  var y = e.clientY - $('#outer_container').innerHeight()/4;
