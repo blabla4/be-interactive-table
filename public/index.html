@@ -10,18 +10,50 @@
 		<script src="main.js"></script>
 	</head>
 	<body>
-		<div id='outer_container' class="outer_container draggable tap-target" style="display:none;">
-			<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>
-			<ul class="menu_option">
-			  <li><a href="#"><span class="tf1">Item</span></a></li>
-			  <li><a href="#"><span class="f2">Item</span></a></li>
-			  <li><a href="#"><span>Item</span></a></li>
-			  <li><a href="#"><span class="usr">Item</span></a></li>
-			  <li><a href="#"><span>Item</span></a></li>
-			  <li><a href="#"><span>Item</span></a></li>
-			</ul>
+		<div id="back">
+			<div id='outer_container' class="outer_container draggable tap-target" style="display:none;">
+				<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>
+				<ul class="menu_option">
+				  <li><a href="#"><span class="tf1" onclick='get("http://10.134.15.103/api/tv/channels/1")'>Item</span></a></li>
+				  <li><a href="#"><span class="f2" onclick='get("http://10.134.15.103/api/tv/channels/2")'>Item</span></a></li>
+				  <li><a href="#"><span class="f3" onclick='get("http://10.134.15.103/api/tv/channels/3")'>Item</span></a></li>
+				  <li><a href="#"><span class="m6" onclick='get("http://10.134.15.103/api/tv/channels/6")'>Item</span></a></li>
+				  <li><a href="#"><span class="bfm" onclick='get("http://10.134.15.103/api/tv/channels/15")'>Item</span></a></li>
+				</ul>
+			</div>
 		</div>
 		<script>
+		function get(url) {
+			$.get(url, function() {})
+		}
+		var show = false;
+		$("#back").css('height', window.outerHeight + 'px')
+		$("#back").on('click', function(e) {
+			var x = e.clientX - $('#outer_container').innerWidth()/4;
+		  var y = e.clientY - $('#outer_container').innerHeight()/4;
+		  $('#outer_container').css('left', x + 'px');
+		  $('#outer_container').css('top', y-120 + 'px');
+		  $('#outer_container').show();
+			$("#back").off();
+			$(".menu_button").trigger('click');
+			$("span").on('click', function(e) {
+				$('#outer_container').hide();
+				e.stopPropagation();
+				$("#back").on('click', function(e) {
+					var x = e.clientX - $('#outer_container').innerWidth()/4;
+				  var y = e.clientY - $('#outer_container').innerHeight()/4;
+				  $('#outer_container').css('left', x + 'px');
+				  $('#outer_container').css('top', y-120 + 'px');
+				  $('#outer_container').show();
+					$("#back").off();
+					$(".menu_button").trigger('click');
+					$("span").on('click', function() {
+						$('#outer_container').hide();
+
+					})
+				});
+			})
+		});
 		interact('.draggable')
 		  .draggable({
 		    inertia: true,

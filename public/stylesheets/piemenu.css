@@ -194,6 +194,15 @@ textarea {
 .f2 {
   background-image: url("../images/f2.png");
 }
+.f3 {
+  background-image: url("../images/f3.svg");
+}
+.m6 {
+  background-image: url("../images/m6.png");
+}
+.bfm {
+  background-image: url("../images/bfm.svg");
+}
 .btn-rotate span {
   visibility: 0;
   /*
