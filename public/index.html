@@ -16,8 +16,10 @@
 				<ul class="menu_option">
 				  <li><a href="#"><span class="tf1" onclick='get("http://10.134.15.103/api/tv/channels/1")'>Item</span></a></li>
 				  <li><a href="#"><span class="f2" onclick='get("http://10.134.15.103/api/tv/channels/2")'>Item</span></a></li>
-				  <li><a href="#"><span class="f3" onclick='get("http://10.134.15.103/api/tv/channels/3")'>Item</span></a></li>
 				  <li><a href="#"><span class="m6" onclick='get("http://10.134.15.103/api/tv/channels/6")'>Item</span></a></li>
+					<li><a href="#"><span class="arte" onclick='get("http://10.134.15.103/api/tv/channels/7")'>Item</span></a></li>
+					<li><a href="#"><span class="d8" onclick='get("http://10.134.15.103/api/tv/channels/8")'>Item</span></a></li>
+				  <li><a href="#"><span class="w9" onclick='get("http://10.134.15.103/api/tv/channels/9")'>Item</span></a></li>
 				  <li><a href="#"><span class="bfm" onclick='get("http://10.134.15.103/api/tv/channels/15")'>Item</span></a></li>
 				</ul>
 			</div>
@@ -28,36 +30,14 @@
 		}
 		var show = false;
 		$("#back").css('height', window.innerHeight - window.innerHeight*5/100 + 'px')
-		$("#back").on('click', function(e) {
-			var x = e.clientX - $('#outer_container').innerWidth()/4;
-		  var y = e.clientY - $('#outer_container').innerHeight()/4;
-		  $('#outer_container').css('left', x + 'px');
-		  $('#outer_container').css('top', y-120 + 'px');
-		  $('#outer_container').show();
-			$("#back").off();
-			$(".menu_button").trigger('click');
-			$("span").on('click', function(e) {
-				$('#outer_container').hide();
-				e.stopPropagation();
-				$("#back").on('click', function(e) {
-					var x = e.clientX - $('#outer_container').innerWidth()/4;
-				  var y = e.clientY - $('#outer_container').innerHeight()/4;
-				  $('#outer_container').css('left', x + 'px');
-				  $('#outer_container').css('top', y-120 + 'px');
-				  $('#outer_container').show();
-					$("#back").off();
-					$(".menu_button").trigger('click');
-					$("span").on('click', function() {
-						$('#outer_container').hide();
-
-					})
-				});
-			})
-		});
+		handleClick();
 		interact('.draggable')
 		  .draggable({
 		    inertia: true,
-		    onmove: dragMoveListener
+		    onmove: dragMoveListener,
+				restrict: {
+					restriction: 'parent'
+		    }
 		  });
 	  function dragMoveListener (event) {
 	    var target = event.target,
@@ -92,6 +72,28 @@
 
 			$("#info").fadeIn("slow").fadeOut("slow");
 			PieMenuInit();
+		}
+		show2 = false;
+		function handleClick() {
+			$("#back").on('click', function(e) {
+				if(show == false) {
+				var x = e.clientX - $('#outer_container').innerWidth()/4;
+			  var y = e.clientY - $('#outer_container').innerHeight()/4;
+			  $('#outer_container').css('left', x + 'px');
+			  $('#outer_container').css('top', y-120 + 'px');
+			  $('#outer_container').show();
+				setTimeout(function() { $(".menu_button").trigger('click');  show2 = false;}, 100);
+				show = true;
+				$("span").on('click', function(e) {
+					if(show == true && show2 == false) {
+					$(".menu_button").trigger('click');
+					setTimeout(function() { $('#outer_container').hide(); show = false;}, 200);
+					show2 = true;
+					e.stopPropagation();
+				}
+				})
+			}
+			});
 		}
 		</script>
 	</body>
