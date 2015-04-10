@@ -222,6 +222,9 @@ textarea {
 	transform: rotate(-135deg)
 	*/
 }
+::-webkit-scrollbar {
+    display: none;
+}
 .active .menu_option li a {
   -webkit-animation: expand .6s ease 1 backwards;
   -moz-animation: expand .6s ease 1 backwards;
