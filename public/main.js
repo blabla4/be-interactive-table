@@ -227,13 +227,13 @@ function createSubMenuLights() {
   }, 100);
 
   var menu = $('<ul class="menu_option">').appendTo(container);
-  $('<li><a href="#"><span class="color1">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="color2">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="color1" onclick="setHueColor(2, this)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="color2" onclick="setHueColor(2, this)">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="power">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="color3">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="color1">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="color2">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="color3">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="color3" onclick="setHueColor(2, this)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="color1" onclick="setHueColor(1, this)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="color2" onclick="setHueColor(1, this)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="color3" onclick="setHueColor(1, this)">Item</span></a></li>').appendTo(menu);
 
   container.PieMenu({
     'starting_angle': 0,
@@ -242,4 +242,8 @@ function createSubMenuLights() {
   });
 
   subMenuLights = container;
+}
+
+function setHueColor(light, that) {
+  $.get('http://10.134.15.103/api/lights/color/' + light + '/' + tinycolor($(that).css("background-color")).toName());
 }

@@ -6,6 +6,7 @@
   "dependencies": {
       "jquery": "latest",
       "interact": "latest",
-      "socket.io-client": "latest"
+      "socket.io-client": "latest",
+      "tinycolor": "latest"
   }
 }
