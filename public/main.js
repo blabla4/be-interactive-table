@@ -182,13 +182,13 @@ function createSubMenuTv() {
   }, 100);
 
   var menu = $('<ul class="menu_option">').appendTo(container);
-  $('<li><a href="#"><span class="tf1">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="f2">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="m6">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="arte">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="d8">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="w9">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="bfm">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="tf1" onclick="swapChannel(1)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="f2" onclick="swapChannel(2)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="m6" onclick="swapChannel(6)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="arte" onclick="swapChannel(7)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="d8" onclick="swapChannel(8)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="w9" onclick="swapChannel(9)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="bfm" onclick="swapChannel(15)">Item</span></a></li>').appendTo(menu);
 
   container.PieMenu({
     'starting_angle': 0,
@@ -197,6 +197,10 @@ function createSubMenuTv() {
   });
 
   subMenuTv = container;
+}
+
+function swapChannel(channel) {
+  $.get('http://10.134.15.103/api/tv/channels/' + channel);
 }
 
 function createSubMenuLights() {
