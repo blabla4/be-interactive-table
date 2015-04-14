@@ -35,7 +35,6 @@
         setPosition(0);
         $(this).parent().removeClass('active');
         $(this).parent().addClass('inactive');
-
       } else {
         setPosition(1);
         $(this).parent().addClass('active');

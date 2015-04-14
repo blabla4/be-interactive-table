@@ -101,8 +101,6 @@ textarea {
   box-sizing: border-box
 }
 .outer_container {
-  height: 200px;
-  width: 200px;
   position: relative
 }
 .menu_button {
@@ -169,13 +167,13 @@ textarea {
 .menu_option li a span {
   background-attachment: scroll;
   background-clip: border-box;
-  background-color: transparent;
+  /* background-color: transparent; */
   /*background-image: url("../tf1.png");*/
 
   background-origin: padding-box;
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: 60px 60px;
+  background-size: 60% 60%;
   display: block;
   width: 80px;
   height: 80px;
@@ -211,6 +209,48 @@ textarea {
 }
 .w9 {
   background-image: url("../images/w9.svg");
+}
+.camera {
+  background-image: url("../images/camera.svg");
+  -webkit-filter: invert(100%);
+  -webkit-transform: rotate(-90deg);
+}
+.camera1 {
+  background-image: url("../images/camera.svg");
+  -webkit-filter: invert(100%);
+  -webkit-transform: rotate(90deg);
+}
+.temp {
+  background-image: url("../images/temp.svg");
+  -webkit-filter: invert(100%);
+}
+.lights {
+  background-image: url("../images/lights.svg");
+  -webkit-filter: invert(100%);
+}
+.tv {
+  background-image: url("../images/tv.svg");
+  -webkit-filter: invert(100%);
+}
+.color1 {
+  background-color: cornflowerblue;
+}
+.color2 {
+  background-color: darkorange;
+}
+.color3 {
+  background-color: chartreuse;
+}
+.power {
+  background-image: url("../images/power.svg");
+  -webkit-filter: invert(100%);
+}
+.videoContainer {
+  position: relative;
+  width: 30%;
+  height: 20%;
+	border-radius: 5px;
+	border: 5px solid rgb(218, 211, 211);
 }
 .btn-rotate span {
   visibility: 0;

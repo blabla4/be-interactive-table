@@ -10,91 +10,39 @@
 		<script src="main.js"></script>
 	</head>
 	<body>
-		<div id="back">
-			<div id='outer_container' class="outer_container draggable tap-target" style="display:none;">
-				<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>
-				<ul class="menu_option">
-				  <li><a href="#"><span class="tf1" onclick='get("http://10.134.15.103/api/tv/channels/1")'>Item</span></a></li>
-				  <li><a href="#"><span class="f2" onclick='get("http://10.134.15.103/api/tv/channels/2")'>Item</span></a></li>
-				  <li><a href="#"><span class="m6" onclick='get("http://10.134.15.103/api/tv/channels/6")'>Item</span></a></li>
-					<li><a href="#"><span class="arte" onclick='get("http://10.134.15.103/api/tv/channels/7")'>Item</span></a></li>
-					<li><a href="#"><span class="d8" onclick='get("http://10.134.15.103/api/tv/channels/8")'>Item</span></a></li>
-				  <li><a href="#"><span class="w9" onclick='get("http://10.134.15.103/api/tv/channels/9")'>Item</span></a></li>
-				  <li><a href="#"><span class="bfm" onclick='get("http://10.134.15.103/api/tv/channels/15")'>Item</span></a></li>
-				</ul>
-			</div>
+		<div id="background">
+
 		</div>
 		<script>
-		function get(url) {
-			$.get(url, function() {})
-		}
-		var show = false;
-		$("#back").css('height', window.innerHeight - window.innerHeight*5/100 + 'px')
-		handleClick();
-		interact('.draggable')
-		  .draggable({
-		    inertia: true,
-		    onmove: dragMoveListener,
-				restrict: {
-					restriction: 'parent'
-		    }
-		  });
-	  function dragMoveListener (event) {
-	    var target = event.target,
-	        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-	        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-	    target.style.webkitTransform =
-	    target.style.transform =
-	      'translate(' + x + 'px, ' + y + 'px)';
-	    target.setAttribute('data-x', x);
-	    target.setAttribute('data-y', y);
-	  }
-		window.dragMoveListener = dragMoveListener;
-		interact('.tap-target')
-		  .on('tap', function (event) {
-				event.target.click();
-		    event.preventDefault();
-		 	})
-
-		function PieMenuInit(){
-			$('#outer_container').PieMenu({
-				'starting_angle':$('#s_angle').val(),
-				'angel_difference' : $('#diff_angle').val(),
-				'radius':$('#radius').val(),
+			var angle = 0;
+			interact('.draggable')
+			  .draggable({
+			    onmove: dragMoveListener
+			  });
+			interact('.tap-target')
+			  .on('tap', function (event) {
+					event.target.click();
+			    event.preventDefault();
+				});
+			interact('#background').gesturable({
+			  onmove: function (event) {
+			    var arrow = document.getElementById('outer_container');
+			    angle += event.da;
+			    arrow.style.webkitTransform =
+			    arrow.style.transform =
+			      'rotate(' + angle + 'deg)';
+			  }
 			});
-		}
-		$(function() {
-			PieMenuInit();
-		});
-		function reset(){
-			if($(".menu_button").hasClass('btn-rotate'))
-			$(".menu_button").trigger('click');
-
-			$("#info").fadeIn("slow").fadeOut("slow");
-			PieMenuInit();
-		}
-		show2 = false;
-		function handleClick() {
-			$("#back").on('click', function(e) {
-				if(show == false) {
-				var x = e.clientX - $('#outer_container').innerWidth()/4;
-			  var y = e.clientY - $('#outer_container').innerHeight()/4;
-			  $('#outer_container').css('left', x + 'px');
-			  $('#outer_container').css('top', y-120 + 'px');
-			  $('#outer_container').show();
-				setTimeout(function() { $(".menu_button").trigger('click');  show2 = false;}, 100);
-				show = true;
-				$("span").on('click', function(e) {
-					if(show == true && show2 == false) {
-					$(".menu_button").trigger('click');
-					setTimeout(function() { $('#outer_container').hide(); show = false;}, 200);
-					show2 = true;
-					e.stopPropagation();
-				}
-				})
-			}
-			});
-		}
+		  function dragMoveListener (event) {
+		    var target = event.target,
+		        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+		        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+		    target.style.webkitTransform =
+		    target.style.transform =
+		      'translate(' + x + 'px, ' + y + 'px)';
+		    target.setAttribute('data-x', x);
+		    target.setAttribute('data-y', y);
+		  }
 		</script>
 	</body>
 </html>
