@@ -239,7 +239,13 @@ textarea {
   background-color: darkorange;
 }
 .color3 {
-  background-color: chartreuse;
+  background-color: crimson;
+}
+.color4 {
+  background-color: limegreen;
+}
+.color5 {
+  background-color: rebeccapurple;
 }
 .power {
   background-image: url("../images/power.svg");
