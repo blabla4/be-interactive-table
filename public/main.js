@@ -269,11 +269,11 @@ function setHueColor(light, that) {
 function powerLights() {
   if(lightsOn) {
     $.get('http://10.134.15.103/api/lights/power/1/off');
-    $.get('http://10.134.15.103/api/lights/power/2/off');
+    setTimeout(function() { $.get('http://10.134.15.103/api/lights/power/2/off'); }, 500);
     lightsOn = false;
   } else {
     $.get('http://10.134.15.103/api/lights/power/1/on');
-    $.get('http://10.134.15.103/api/lights/power/2/on');
+    setTimeout(function() { $.get('http://10.134.15.103/api/lights/power/2/on'); }, 500);
     lightsOn = true;
   }
 }
