@@ -4,6 +4,8 @@ var currentMenuButton = null;
 var subMenuTv = null;
 var subMenuLights = null;
 var subMenuVideo = null;
+var lightsOn = true;
+var tvOn = true;
 
 socket.on('card', function(param) {
   var x = param.x;
@@ -184,6 +186,7 @@ function createSubMenuTv() {
   var menu = $('<ul class="menu_option">').appendTo(container);
   $('<li><a href="#"><span class="tf1" onclick="swapChannel(1)">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="f2" onclick="swapChannel(2)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="power" onclick="powerTv()">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="m6" onclick="swapChannel(6)">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="arte" onclick="swapChannel(7)">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="d8" onclick="swapChannel(8)">Item</span></a></li>').appendTo(menu);
@@ -201,6 +204,16 @@ function createSubMenuTv() {
 
 function swapChannel(channel) {
   $.get('http://10.134.15.103/api/tv/channels/' + channel);
+}
+
+function powerTv() {
+  if(tvOn) {
+    $.get('http://10.134.15.103/api/bravia/power/off');
+    tvOn = false;
+  } else {
+    $.get('http://10.134.15.103/api/bravia/power/on');
+    tvOn = true;
+  }
 }
 
 function createSubMenuLights() {
@@ -254,5 +267,13 @@ function setHueColor(light, that) {
 }
 
 function powerLights() {
-  
+  if(lightsOn) {
+    $.get('http://10.134.15.103/api/lights/power/1/off');
+    $.get('http://10.134.15.103/api/lights/power/2/off');
+    lightsOn = false;
+  } else {
+    $.get('http://10.134.15.103/api/lights/power/1/on');
+    $.get('http://10.134.15.103/api/lights/power/2/on');
+    lightsOn = true;
+  }
 }
