@@ -4,6 +4,7 @@ var currentMenuButton = null;
 var subMenuTv = null;
 var subMenuLights = null;
 var subMenuVideo = null;
+var subMenuTemp = null;
 var lightsOn = true;
 var tvOn = true;
 
@@ -18,6 +19,16 @@ socket.on('card', function(param) {
 window.onload = function() {
   $(document).mouseup(function (e)
   {
+    if(subMenuTemp !== null) {
+      if (!subMenuTemp.is(e.target) && subMenuTemp.has(e.target).length === 0)
+      {
+        setTimeout(function() {
+          subMenuTemp.remove();
+          subMenuTemp = null;
+        }, 300);
+      }
+    }
+
     if(subMenuTv !== null) {
       if (!subMenuTv.is(e.target) && subMenuTv.has(e.target).length === 0)
       {
@@ -94,7 +105,7 @@ function createMenu(x, y) {
 
   var menu = $('<ul class="menu_option">').appendTo(container);
   $('<li><a href="#"><span class="camera" onclick="createSubMenuVideo()">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="temp">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="temp" onclick="createSubMenuTemp()">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="lights" onclick="createSubMenuLights()">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="tv" onclick="createSubMenuTv()">Item</span></a></li>').appendTo(menu);
 
@@ -103,6 +114,53 @@ function createMenu(x, y) {
     'angel_difference' : 360,
     'radius': 175,
   });
+}
+
+function createSubMenuTemp() {
+  if(subMenuTemp !== null) {
+    return;
+  }
+
+  var container = $('<div></div>', {
+    class: 'outer_container draggable tap-target'
+  }).appendTo('#background');
+  container.css('left', (currentContainer.position().left+175-8) + 'px');
+  container.css('top', (currentContainer.position().top-8) + 'px');
+
+  var menuButton = $('<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>').appendTo(container);
+  menuButton.css('background-color', 'rgb(68,68,68)');
+  menuButton.css('background-image', 'url("../images/mother.png")');
+  menuButton.css('background-size', '50%');
+  menuButton.css('background-repeat', 'no-repeat');
+  menuButton.css('background-position-x', '50%');
+  menuButton.css('background-position-y', '50%');
+
+  setTimeout(function() {
+    menuButton.trigger('click');
+    deleteMenu();
+  }, 100);
+
+  var menu = $('<ul class="menu_option">').appendTo(container);
+  $('<li><a href="#"><span class="cookie1" onclick="showTemp(1)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="cookie2" onclick="showTemp(2)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="cookie3" onclick="showTemp(3)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="cookie4" onclick="showTemp(4)">Item</span></a></li>').appendTo(menu);
+  $(".cookie1").css("background-size","45% 70%");
+  $(".cookie2").css("background-size","45% 70%");
+  $(".cookie3").css("background-size","45% 70%");
+  $(".cookie4").css("background-size","45% 70%");
+  
+  container.PieMenu({
+    'starting_angle': 0,
+    'angel_difference' : 360,
+    'radius': 120,
+  });
+
+  subMenuTemp = container;
+}
+
+function showTemp(id) {
+
 }
 
 function createSubMenuVideo() {
