@@ -236,6 +236,25 @@ textarea {
   background-image: url("../images/monitoring.svg");
   -webkit-filter: invert(100%);
 }
+
+.cookie1 {
+  background-image: url("../images/cookie-bleu.png");
+  background-repeat: no-repeat;
+  background-size: 50px 50px;
+}
+.cookie2 {
+  background-image: url("../images/cookie-jaune.png");
+  background-size: 70%;
+}
+.cookie3 {
+  background-image: url("../images/cookie-orange.png");
+  background-size: 70%;
+}
+.cookie4 {
+  background-image: url("../images/cookie-vert.png");
+  background-size: 70%;
+}
+
 .color1 {
   background-color: cornflowerblue;
 }
