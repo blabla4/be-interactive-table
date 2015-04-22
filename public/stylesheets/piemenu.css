@@ -232,6 +232,10 @@ textarea {
   background-image: url("../images/tv.svg");
   -webkit-filter: invert(100%);
 }
+.monitor {
+  background-image: url("../images/monitoring.svg");
+  -webkit-filter: invert(100%);
+}
 .color1 {
   background-color: cornflowerblue;
 }
@@ -251,7 +255,7 @@ textarea {
   background-image: url("../images/power.svg");
   -webkit-filter: invert(100%);
 }
-.videoContainer {
+.videoContainer, .icingaContainer {
   position: relative;
   width: 30%;
   height: 20%;

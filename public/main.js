@@ -4,6 +4,7 @@ var currentMenuButton = null;
 var subMenuTv = null;
 var subMenuLights = null;
 var subMenuVideo = null;
+var subMenuMonitor = null;
 var lightsOn = true;
 var tvOn = true;
 
@@ -18,6 +19,16 @@ socket.on('card', function(param) {
 window.onload = function() {
   $(document).mouseup(function (e)
   {
+    if(subMenuMonitor !== null) {
+      if (!subMenuMonitor.is(e.target) && subMenuMonitor.has(e.target).length === 0)
+      {
+        setTimeout(function() {
+          subMenuMonitor.remove();
+          subMenuMonitor = null;
+        }, 300);
+      }
+    }
+
     if(subMenuTv !== null) {
       if (!subMenuTv.is(e.target) && subMenuTv.has(e.target).length === 0)
       {
@@ -97,12 +108,53 @@ function createMenu(x, y) {
   $('<li><a href="#"><span class="temp">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="lights" onclick="createSubMenuLights()">Item</span></a></li>').appendTo(menu);
   $('<li><a href="#"><span class="tv" onclick="createSubMenuTv()">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="monitor" onclick="createSubMenuMonitor()">Item</span></a></li>').appendTo(menu);
 
   container.PieMenu({
     'starting_angle': 0,
     'angel_difference' : 360,
     'radius': 175,
   });
+}
+
+function createSubMenuMonitor() {
+  if(subMenuMonitor !== null) {
+    return;
+  }
+
+  var container = $('<div></div>', {
+    class: 'outer_container draggable tap-target'
+  }).appendTo('#background');
+  container.css('left', (currentContainer.position().left+175-8) + 'px');
+  container.css('top', (currentContainer.position().top-8) + 'px');
+
+  var menuButton = $('<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>').appendTo(container);
+  menuButton.css('background-color', 'rgb(68,68,68)');
+  menuButton.css('background-image', 'url("../images/monitoring.svg")');
+  menuButton.css('background-size', '60%');
+  menuButton.css('background-repeat', 'no-repeat');
+  menuButton.css('background-position-x', '50%');
+  menuButton.css('background-position-y', '50%');
+  setTimeout(function() {
+    menuButton.trigger('click');
+    deleteMenu();
+  }, 100);
+
+  var menu = $('<ul class="menu_option">').appendTo(container);
+  $('<li><a href="#"><span class="monitor" onclick="showIcinga()">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
+
+
+  container.PieMenu({
+    'starting_angle': 0,
+    'angel_difference' : 360,
+    'radius': 120,
+  });
+
+  subMenuMonitor = container;
 }
 
 function createSubMenuVideo() {
@@ -158,6 +210,26 @@ function showCamera(id) {
       src: 'http://cs.isen.fr/camera2/mjpg/video.mjpg'
     }).appendTo(container2);
   }
+}
+
+function showIcinga() {
+  getIcingaLog(divIcinga);
+}
+
+function divIcinga(data) {
+    var container = $('<div></div>', {
+      class: 'icingaContainer draggable'
+    }).appendTo('#background');
+    $('<ul></ul>').appendTo(container);
+    data.forEach(function(item) {
+      $('<li/>', {html: item.display_name + ' : ' + item.perfdata}).appendTo('ul');
+    });
+}
+
+function getIcingaLog(callback) {
+  $.get('/icinga/isen-demo-2/disk', function( response ) {
+    callback(response);
+  });
 }
 
 function createSubMenuTv() {

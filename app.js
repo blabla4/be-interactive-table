@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var card = require('./routes/card');
+var icinga = require('./routes/icinga');
 
 var app = express();
 
@@ -20,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/card', card);
+app.use('/icinga', icinga);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -51,6 +53,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;
