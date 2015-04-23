@@ -334,7 +334,7 @@ function createSubMenuTv() {
 }
 
 function swapChannel(channel) {
-  $.get('http://10.134.15.103/api/tv/channels/' + channel);
+  $.get('http://10.134.15.103/api/tv/channel/' + channel);
 }
 
 function powerTv() {
