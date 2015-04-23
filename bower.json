@@ -7,6 +7,7 @@
       "jquery": "latest",
       "interact": "latest",
       "socket.io-client": "latest",
-      "tinycolor": "latest"
+      "tinycolor": "latest",
+      "highcharts-release": "latest"
   }
 }
