@@ -138,8 +138,8 @@ function createSubMenuTemp() {
   var container = $('<div></div>', {
     class: 'outer_container draggable tap-target'
   }).appendTo('#background');
-  container.css('left', (currentContainer.position().left+175-8) + 'px');
-  container.css('top', (currentContainer.position().top-8) + 'px');
+  container.css('left', (currentContainer.position().left+50) + 'px');
+  container.css('top', (currentContainer.position().top-175) + 'px');
 
   var menuButton = $('<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>').appendTo(container);
   menuButton.css('background-color', 'rgb(68,68,68)');
@@ -198,8 +198,8 @@ function createSubMenuMonitor() {
   var container = $('<div></div>', {
     class: 'outer_container draggable tap-target'
   }).appendTo('#background');
-  container.css('left', (currentContainer.position().left+175-8) + 'px');
-  container.css('top', (currentContainer.position().top-8) + 'px');
+  container.css('left', (currentContainer.position().left+50) + 'px');
+  container.css('top', (currentContainer.position().top+175) + 'px');
 
   var menuButton = $('<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>').appendTo(container);
   menuButton.css('background-color', 'rgb(68,68,68)');
@@ -214,12 +214,8 @@ function createSubMenuMonitor() {
   }, 100);
 
   var menu = $('<ul class="menu_option">').appendTo(container);
-  $('<li><a href="#"><span class="monitor" onclick="showIcinga()">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
-  $('<li><a href="#"><span class="monitor" onclick="">Item</span></a></li>').appendTo(menu);
-
+  $('<li><a href="#"><span class="monitor" onclick="showIcinga(1)">Item</span></a></li>').appendTo(menu);
+  $('<li><a href="#"><span class="monitor" onclick="showIcinga(2)">Item</span></a></li>').appendTo(menu);
 
   container.PieMenu({
     'starting_angle': 0,
@@ -285,53 +281,74 @@ function showCamera(id) {
   }
 }
 
-function showIcinga() {
+function showIcinga(number) {
+  if(number == 1) {
+    var computer = "isen-demo-1";
+  } else if(number == 2) {
+    var computer = "isen-demo-2";
+  } else {
+    var computer = "table-k2kineti";
+  }
   divIcinga();
-  getIcingaLoadData(drawLoad);
-  getIcingaDiskData(drawDisk);
+  getIcingaRamData(computer,drawRam);
+  getIcingaLoadData(computer,drawLoad);
+  getIcingaDiskData(computer,drawDiskC);
+  getIcingaDiskData(computer,drawDiskD);
 }
 
 function divIcinga() {
+    $(".icingaContainer").remove();
     var container = $('<div></div>', {
       class: 'icingaContainer draggable'
     }).appendTo('#background');
     $('<div></div>', {
-      class: 'graph',
+      class: 'graphIcinga',
+      id: 'ram'
+    }).appendTo(container);
+    $('<div></div>', {
+      class: 'graphIcinga',
       id: 'load'
     }).appendTo(container);
     $('<div></div>', {
-      class: 'graph',
-      id: 'disk'
+      class: 'graphIcinga',
+      id: 'disk1'
+    }).appendTo(container);
+    $('<div></div>', {
+      class: 'graphIcinga',
+      id: 'disk2'
     }).appendTo(container);
 }
 
-function getIcingaLoadData(callback) {
-  $.get('/icinga/isen-demo-1/CPU-load', function( response ) {
+function getIcingaRamData(computer, callback) {
+  $.get('/icinga/' + computer + '/RAM', function( response ) {
+    console.log(response);
     callback(response);
   });
 }
 
-function getIcingaDiskData(callback) {
-  $.get('/icinga/isen-demo-1/Hard-disk', function( response ) {
+function getIcingaLoadData(computer, callback) {
+  $.get('/icinga/' + computer + '/CPU-load', function( response ) {
+    console.log(response);
     callback(response);
   });
 }
 
-function getIcingaRamData(callback) {
-  $.get('/icinga/isen-deo-1/RAM', function( response ) {
+function getIcingaDiskData(computer, callback) {
+  $.get('/icinga/' + computer + '/Hard-disk', function( response ) {
+    console.log(response);
     callback(response);
   });
 }
 
-function drawDisk(perfData) {
-  $('#disk').highcharts({
+function drawDiskC(perfData) {
+  $('#disk1').highcharts({
           chart: {
               plotBackgroundColor: null,
               plotBorderWidth: null,
               plotShadow: false
           },
           title: {
-              text: 'Disk share'
+              text: 'C:'
           },
           tooltip: {
               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -339,14 +356,7 @@ function drawDisk(perfData) {
           plotOptions: {
               pie: {
                   allowPointSelect: true,
-                  cursor: 'pointer',
-                  dataLabels: {
-                      enabled: true,
-                      format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                      style: {
-                          color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                      }
-                  }
+                  cursor: 'pointer'
               }
           },
           series: [{
@@ -354,18 +364,80 @@ function drawDisk(perfData) {
               name: 'Disk share',
               data: (function() {
       						var value= [];
-      						for (var i in perfData) {
-      							value.push([i, parseFloat(perfData[i])]);
-      						};
-                  console.log(value);
+                  value.push(["Free Space", parseFloat(perfData['\'C:\\'])]);
+                  value.push(["Used", 100 - parseFloat(perfData['\'C:\\'])]);
       						return value;
       					}())
           }]
       });
 }
 
+function drawDiskD(perfData) {
+  $('#disk2').highcharts({
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+          },
+          title: {
+              text: 'D:'
+          },
+          tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+              pie: {
+                  allowPointSelect: true,
+                  cursor: 'pointer'
+              }
+          },
+          series: [{
+              type: 'pie',
+              name: 'Disk share',
+              data: (function() {
+      						var value= [];
+                  value.push(["Free Space", parseFloat(perfData['\'D:\\'])]);
+                  value.push(["Used", 100 - parseFloat(perfData['\'D:\\'])]);
+      						return value;
+      					}())
+          }]
+      });
+}
+
+function drawRam(perfData) {
+  $('#ram').highcharts({
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+          },
+          title: {
+              text: 'RAM'
+          },
+          tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+              pie: {
+                  allowPointSelect: true,
+                  cursor: 'pointer'
+              }
+          },
+          series: [{
+              type: 'pie',
+              name: 'RAM',
+              data: (function() {
+      						var value= [];
+                  value.push(["Used", parseFloat(perfData['RAM'])]);
+                  value.push(["Unused", 100 - parseFloat(perfData['RAM'])]);
+      						return value;
+      					}())
+          }]
+      });
+}
+
+
 function drawLoad(perfData) {
-  console.log(perfData);
   $('#load').highcharts({
     chart: {
         type: 'column'
@@ -414,7 +486,7 @@ function divMother(cookie) {
     class: 'motherContainer draggable'
   }).appendTo('#background');
   $('<div></div>', {
-    class: 'graph',
+    class: 'graphMother',
     id: cookie
   }).appendTo(container);
   getTemp(cookie, drawGraph);
@@ -688,8 +760,8 @@ function createSubMenuTv() {
   var container = $('<div></div>', {
     class: 'outer_container draggable tap-target'
   }).appendTo('#background');
-  container.css('left', (currentContainer.position().left-8) + 'px');
-  container.css('top', (currentContainer.position().top+175-8) + 'px');
+  container.css('left', (currentContainer.position().left-145) + 'px');
+  container.css('top', (currentContainer.position().top+95) + 'px');
 
   var menuButton = $('<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>').appendTo(container);
   menuButton.css('background-color', 'rgb(68,68,68)');
@@ -744,8 +816,8 @@ function createSubMenuLights() {
   var container = $('<div></div>', {
     class: 'outer_container draggable tap-target'
   }).appendTo('#background');
-  container.css('left', (currentContainer.position().left-175-8) + 'px');
-  container.css('top', (currentContainer.position().top-8) + 'px');
+  container.css('left', (currentContainer.position().left-150) + 'px');
+  container.css('top', (currentContainer.position().top-90) + 'px');
 
   var menuButton = $('<a class="menu_button" href="#" title="Toggle"><span>Menu Toggle</span></a>').appendTo(container);
   menuButton.css('background-color', 'rgb(68,68,68)');
