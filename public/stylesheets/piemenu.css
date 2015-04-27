@@ -274,10 +274,19 @@ textarea {
   background-image: url("../images/power.svg");
   -webkit-filter: invert(100%);
 }
-.videoContainer, .icingaContainer {
+.videoContainer {
   position: relative;
   width: 30%;
   height: 20%;
+	border-radius: 5px;
+	border: 5px solid rgb(218, 211, 211);
+}
+.icingaContainer {
+  position: relative;
+  width: auto;
+  height: auto;
+  max-width: 60%;
+  max-height: 60%;
 	border-radius: 5px;
 	border: 5px solid rgb(218, 211, 211);
 }
@@ -287,6 +296,11 @@ textarea {
   height: 20%;
 	border-radius: 5px;
 	border: 5px solid rgb(218, 211, 211);
+}
+.graph {
+  display: inline-block;
+  width: 50%;
+  height: 20%;
 }
 .btn-rotate span {
   visibility: 0;

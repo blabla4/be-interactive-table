@@ -286,22 +286,126 @@ function showCamera(id) {
 }
 
 function showIcinga() {
-  getIcingaLog(divIcinga);
+  divIcinga();
+  getIcingaLoadData(drawLoad);
+  getIcingaDiskData(drawDisk);
 }
 
-function divIcinga(data) {
+function divIcinga() {
     var container = $('<div></div>', {
       class: 'icingaContainer draggable'
     }).appendTo('#background');
-    $('<ul></ul>').appendTo(container);
-    data.forEach(function(item) {
-      $('<li/>', {html: item.display_name + ' : ' + item.perfdata}).appendTo('ul');
-    });
+    $('<div></div>', {
+      class: 'graph',
+      id: 'load'
+    }).appendTo(container);
+    $('<div></div>', {
+      class: 'graph',
+      id: 'disk'
+    }).appendTo(container);
 }
 
-function getIcingaLog(callback) {
-  $.get('/icinga/isen-demo-2/disk', function( response ) {
+function getIcingaLoadData(callback) {
+  $.get('/icinga/isen-demo-1/CPU-load', function( response ) {
     callback(response);
+  });
+}
+
+function getIcingaDiskData(callback) {
+  $.get('/icinga/isen-demo-1/Hard-disk', function( response ) {
+    callback(response);
+  });
+}
+
+function getIcingaRamData(callback) {
+  $.get('/icinga/isen-deo-1/RAM', function( response ) {
+    callback(response);
+  });
+}
+
+function drawDisk(perfData) {
+  $('#disk').highcharts({
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+          },
+          title: {
+              text: 'Disk share'
+          },
+          tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+              pie: {
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                      enabled: true,
+                      format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                      style: {
+                          color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                      }
+                  }
+              }
+          },
+          series: [{
+              type: 'pie',
+              name: 'Disk share',
+              data: (function() {
+      						var value= [];
+      						for (var i in perfData) {
+      							value.push([i, parseFloat(perfData[i])]);
+      						};
+                  console.log(value);
+      						return value;
+      					}())
+          }]
+      });
+}
+
+function drawLoad(perfData) {
+  console.log(perfData);
+  $('#load').highcharts({
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Load average'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Percentage'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '<b>{point.y:.1f} %</b>'
+    },
+    series: [{
+        name: 'Load average',
+        data: (function() {
+						var value= [];
+						for (var i in perfData) {
+							value.push([i, parseFloat(perfData[i])]);
+						};
+            console.log(value);
+						return value;
+					}())
+    }]
   });
 }
 
